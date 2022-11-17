@@ -5,7 +5,6 @@ import postReducer from "./reducer";
 
 const store = configureStore({
   reducer: postReducer,
-  middleware: [thunk],
 });
 
 export default store;

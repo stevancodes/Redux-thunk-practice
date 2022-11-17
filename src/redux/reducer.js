@@ -12,11 +12,11 @@ const BASE_URL = "https://637638f081a568fc25f90df1.mockapi.io/Posts";
 const postReducer = (state = initialState, action) => {
   switch (action.type) {
     case SAVE_POST:
-      return { ...state, posts: [...state.posts, action.post] };
+      return { ...state, posts: action.newPostsSave };
     case GET_POSTS:
       return { ...state, posts: action.posts };
     case DELETE:
-      return { ...state, posts: action.filteredPosts };
+      return { ...state, posts: action.newPostsDelete };
     case LOADING_TRUE:
       return { ...state, loader: true };
     case LOADING_FALSE:
@@ -28,16 +28,18 @@ const postReducer = (state = initialState, action) => {
 
 export default postReducer;
 
-export const deletePost = (id) => async (dispatch, getState) => {
+export const deletePost = (id, postId) => async (dispatch, getState) => {
   dispatch({ type: LOADING_TRUE });
   const postDelete = await fetch(`${BASE_URL}/${id}`, { method: "DELETE" });
-  const response = await postDelete.text();
-  const state = getState();
-  const filteredPosts = state.posts.filter((element) => element.id !== id);
-  if (response) {
+  //   const response = await postDelete.text();
+  //   const state = getState();
+  const posts = await fetch(BASE_URL);
+  const newPostsDelete = await posts.json();
+  //   const filteredPosts = state.posts.filter((element) => element.id != id);   /// depricated because of post ID
+  if (posts) {
     dispatch({
       type: DELETE,
-      filteredPosts,
+      newPostsDelete,
     });
     dispatch({ type: LOADING_FALSE });
   }
@@ -52,11 +54,12 @@ export const savePost = (post) => async (dispatch, getState) => {
       "Content-type": "application/json",
     },
   });
-  if (response) {
-    console.log(post, "---post");
+  const posts = await fetch(BASE_URL);
+  const newPostsSave = await posts.json();
+  if (posts) {
     dispatch({
       type: SAVE_POST,
-      post,
+      newPostsSave,
     });
     dispatch({ type: LOADING_FALSE });
   }

@@ -1,11 +1,11 @@
 .App {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
-.light {
-  background-color: aqua;
-}
-
-.dark {
-  background-color: blue;
+.loader {
+  margin: 20px;
 }
