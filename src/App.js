@@ -1,20 +1,13 @@
 import { useEffect, useMemo, useRef } from "react";
-import { v4 as uuidv4 } from "uuid";
 import "./App.css";
 import {
   useDeletePostMutation,
   useGetPostsMutation,
   useSavePostMutation,
 } from "./api/apiManagement";
+
 import { useSelector, useDispatch } from "react-redux";
-import {
-  getPosts,
-  allPosts,
-  deletePost,
-  savePost,
-  loadingState,
-  currentTheme,
-} from "./redux/reducer";
+import { getPosts, allPosts, deletePost, savePost, loadingState } from "./redux/reducer";
 import SyncLoader from "react-spinners/SyncLoader";
 
 function App() {
