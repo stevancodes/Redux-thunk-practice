@@ -16,7 +16,7 @@ const postReducer = (state = initialState, action) => {
     case GET_POSTS:
       return { ...state, posts: action.posts };
     case DELETE:
-      return { ...state, posts: action.newPostsDelete };
+      return { ...state, posts: action.filteredPosts };
     case LOADING_TRUE:
       return { ...state, loader: true };
     case LOADING_FALSE:
@@ -28,18 +28,19 @@ const postReducer = (state = initialState, action) => {
 
 export default postReducer;
 
-export const deletePost = (id, postId) => async (dispatch, getState) => {
+export const deletePost = (id) => async (dispatch, getState) => {
   dispatch({ type: LOADING_TRUE });
   const postDelete = await fetch(`${BASE_URL}/${id}`, { method: "DELETE" });
   //   const response = await postDelete.text();
-  //   const state = getState();
-  const posts = await fetch(BASE_URL);
-  const newPostsDelete = await posts.json();
-  //   const filteredPosts = state.posts.filter((element) => element.id != id);   /// depricated because of post ID
-  if (posts) {
+  const state = getState();
+  // const posts = await fetch(BASE_URL);
+  // const newPostsDelete = await posts.json();
+  const filteredPosts = state.posts.filter((element) => element.id !== id);
+  console.log(filteredPosts);
+  if (filteredPosts) {
     dispatch({
       type: DELETE,
-      newPostsDelete,
+      filteredPosts,
     });
     dispatch({ type: LOADING_FALSE });
   }

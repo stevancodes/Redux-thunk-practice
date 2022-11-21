@@ -20,9 +20,10 @@ function App() {
     dispatch(getPosts());
   }, []);
 
-  const removePost = (id, postId) => {
+  const removePost = (id) => {
+    console.log(id);
     if (!id) return;
-    dispatch(deletePost(id, postId));
+    dispatch(deletePost(id));
   };
 
   const savePo = (object) => {
@@ -31,7 +32,6 @@ function App() {
     inputRef.current.value = "";
   };
 
-  console.log(postsSelect);
   return (
     <div className="App">
       <div className="postList">
@@ -42,11 +42,12 @@ function App() {
             </div>
           ) : (
             <>
-              {postsSelect.map((element) => (
-                <div onClick={() => removePost(element.id, element.postId)} key={element.postId}>
-                  {element?.postTitle}
-                </div>
-              ))}
+              {Boolean(postsSelect?.length) &&
+                postsSelect.map((element) => (
+                  <div onClick={() => removePost(element.id)} key={element.id}>
+                    {element?.postTitle}
+                  </div>
+                ))}
             </>
           )}
         </div>
